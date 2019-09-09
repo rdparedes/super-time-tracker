@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Day from './day';
-import GreenButton from '../../greenButton';
+import GreenButton from '../../greenButton/greenButton';
 import Task from '../../../models/task';
 
 const useStyles = makeStyles(theme => ({

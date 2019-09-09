@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import GreenButton from '../../greenButton';
+import GreenButton from '../../greenButton/greenButton';
 import Task from '../../../models/task';
 import { HOURS_MINUTES_SECONDS, HOURS_MINUTES } from '../../../helpers/dateFormats';
 

@@ -1,12 +1,12 @@
 import moment from 'moment';
-import { DATE_FORMAT } from '../helpers/dateFormats'
+import { DATE_FORMAT } from '../helpers/dateFormats';
 
 export default class Task {
   constructor({ id, name, start, end }) {
     this.id = id;
     this.name = name;
-    this.start = moment(start);
-    this.end = moment(end);
+    this.start = moment.utc(start);
+    this.end = moment.utc(end);
     this.duration = this.end.diff(start); // in milliseconds
   }
 }
