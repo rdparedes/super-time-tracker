@@ -22,6 +22,8 @@ Start the backend & frontend apps
 npm run start
 ```
 
+Then, go to http://localhost:8888
+
 ## Preview
 
 ![preview](preview.png)

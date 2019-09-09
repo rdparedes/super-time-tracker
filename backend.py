@@ -8,7 +8,7 @@ from db_service import DBService
 
 
 class TasksHandler(tornado.web.RequestHandler):
-    def initialize(self, db_service):
+    def initialize(self, db_service: DBService):
         self.db = db_service
 
     def get(self):
