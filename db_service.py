@@ -25,3 +25,8 @@ class DBService():
         self.session.add(new_task)
         self.session.commit()
         return self.get_all_tasks()
+
+    def delete_task(self, task_id: int) -> List[Task]:
+        self.session.query(Task).filter(Task.id == task_id).delete()
+        self.session.commit()
+        return self.get_all_tasks()

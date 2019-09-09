@@ -57,7 +57,7 @@ function sortTasks(t) {
   return sortedTasks;
 }
 
-export default function Timer({ tasks, addEntryCallback }) {
+export default function Timer({ tasks, addEntryCallback, deleteEntryCallback }) {
   const classes = useStyles();
   const sortedTasks = sortTasks(tasks);
 
@@ -135,7 +135,14 @@ export default function Timer({ tasks, addEntryCallback }) {
 
       <Grid container direction="column">
         {sortedTasks &&
-          Object.keys(sortedTasks).map(t => <Day key={t} day={t} {...sortedTasks[t]}></Day>)}
+          Object.keys(sortedTasks).map(t => (
+            <Day
+              key={t}
+              day={t}
+              {...sortedTasks[t]}
+              deleteEntryCallback={deleteEntryCallback}
+            ></Day>
+          ))}
       </Grid>
     </Grid>
   );
@@ -143,5 +150,6 @@ export default function Timer({ tasks, addEntryCallback }) {
 
 Timer.propTypes = {
   tasks: PropTypes.object,
-  addEntryCallback: PropTypes.func.isRequired
+  addEntryCallback: PropTypes.func.isRequired,
+  deleteEntryCallback: PropTypes.func.isRequired
 };

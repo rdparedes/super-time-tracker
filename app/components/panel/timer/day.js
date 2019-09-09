@@ -36,7 +36,7 @@ function getFormattedDay(d) {
   return taskIsToday ? 'Today' : taskWasYesterday ? 'Yesterday' : day.format(DATE_FORMAT);
 }
 
-export default function Day({ day, total, tasks }) {
+export default function Day({ day, total, tasks, deleteEntryCallback }) {
   const classes = useStyles();
   const formattedDay = getFormattedDay(day);
 
@@ -67,7 +67,11 @@ export default function Day({ day, total, tasks }) {
               <GreenButton variant="contained">Continue</GreenButton>
             </TableCell>
             <TableCell>
-              <Button variant="contained" color="secondary">
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteEntryCallback(t.id)}
+              >
                 Delete
               </Button>
             </TableCell>
@@ -81,5 +85,6 @@ export default function Day({ day, total, tasks }) {
 Day.propTypes = {
   day: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
-  tasks: PropTypes.arrayOf(PropTypes.instanceOf(Task)).isRequired
+  tasks: PropTypes.arrayOf(PropTypes.instanceOf(Task)).isRequired,
+  deleteEntryCallback: PropTypes.func.isRequired
 };
