@@ -7,10 +7,6 @@ import json
 import tornado.ioloop
 import tornado.web
 
-class HelloWorldHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write("Hello world")
-
 
 class TimeEntriesHandler(tornado.web.RequestHandler):
     db = {
@@ -33,7 +29,7 @@ class TimeEntriesHandler(tornado.web.RequestHandler):
             "id": 3
         },
         4: {
-            "name": "Task 3",
+            "name": "Task 4",
             "start": "2019-04-27T15:19:57.469Z",
             "end": "2019-04-27T16:19:57.469Z",
             "id": 4
@@ -47,7 +43,6 @@ def make_app():
     return tornado.web.Application(
         handlers=[
             (r"/time-entries", TimeEntriesHandler),
-            (r"/helloworld", HelloWorldHandler),
             (r"/(.*)", tornado.web.StaticFileHandler, { 'path': settings.STATIC_PATH,
                                                         'default_filename': 'index.html' })
         ]
