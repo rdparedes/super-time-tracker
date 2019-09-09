@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DATE_FORMAT } from '../helpers/dateFormats';
+import { DAY_MONTH_YEAR } from '../helpers/dateFormats';
 
 export default class Task {
   constructor({ id, name, start, end }) {
@@ -23,17 +23,8 @@ function getUpdatedDay(group, day, task) {
 }
 
 export function groupByDay(tasks) {
-  const now = moment();
-  const yesterday = now.clone().subtract(1, 'day');
-
   return tasks.reduce((groupedTasks, task) => {
-    const taskIsToday = now.isSame(task.end, 'day');
-    const taskWasYesterday = yesterday.isSame(task.end, 'day');
-    const day = taskIsToday
-      ? 'Today'
-      : taskWasYesterday
-      ? 'Yesterday'
-      : task.end.format(DATE_FORMAT);
+    const day = task.end.format(DAY_MONTH_YEAR);
     groupedTasks[day] = getUpdatedDay(groupedTasks, day, task);
     return groupedTasks;
   }, {});

@@ -11,7 +11,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import GreenButton from '../../greenButton/greenButton';
 import Task from '../../../models/task';
-import { HOURS_MINUTES_SECONDS, HOURS_MINUTES } from '../../../helpers/dateFormats';
+import {
+  HOURS_MINUTES_SECONDS,
+  HOURS_MINUTES,
+  DAY_MONTH_YEAR,
+  DATE_FORMAT
+} from '../../../helpers/dateFormats';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -21,15 +26,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function getFormattedDay(d) {
+  const day = moment(d, DAY_MONTH_YEAR);
+  const now = moment();
+  const yesterday = now.clone().subtract(1, 'day');
+
+  const taskIsToday = now.isSame(day, 'day');
+  const taskWasYesterday = yesterday.isSame(day, 'day');
+  return taskIsToday ? 'Today' : taskWasYesterday ? 'Yesterday' : day.format(DATE_FORMAT);
+}
+
 export default function Day({ day, total, tasks }) {
   const classes = useStyles();
+  const formattedDay = getFormattedDay(day);
 
   return (
     <Table className={classes.table}>
       <TableHead>
         <TableRow>
           <TableCell>
-            <Typography variant="h6">{day}</Typography>
+            <Typography variant="h6">{formattedDay}</Typography>
           </TableCell>
           <TableCell></TableCell>
           <TableCell>

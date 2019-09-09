@@ -6,7 +6,7 @@ import Timer from './timer/timer';
 import History from './history/history';
 import TabPanel from './tabPanel';
 import Task, { groupByDay } from '../../models/task';
-import { getTimeEntries } from '../../apiService';
+import { getTimeEntries, postTimeEntry } from '../../apiService';
 
 function a11yProps(index) {
   return {
@@ -32,22 +32,31 @@ const useStyles = makeStyles(theme => ({
 export default function Panel() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [groupedTasks, setGroupedTasks] = React.useState(null);
+  const [groupedTasks, setGroupedTasks] = React.useState({});
   const [taskList, setTaskList] = React.useState([]);
 
   function handleChange(event, newValue) {
     setValue(newValue);
   }
 
+  function updateTasks(data) {
+    const t = Object.values(data).map(e => new Task(e));
+    setGroupedTasks(groupByDay(t));
+    setTaskList(t);
+  }
+
   React.useEffect(() => {
     async function fetchData() {
       const timeEntries = await getTimeEntries();
-      const t = Object.values(timeEntries).map(e => new Task(e));
-      setGroupedTasks(groupByDay(t));
-      setTaskList(t)
+      updateTasks(timeEntries);
     }
     fetchData();
   }, []);
+
+  const addEntry = React.useCallback(async entry => {
+    const updatedEntries = await postTimeEntry(entry);
+    updateTasks(updatedEntries);
+  });
 
   return (
     <div className={classes.root}>
@@ -63,7 +72,7 @@ export default function Panel() {
         <Tab label="History" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0} className={classes.tabPanel}>
-        <Timer {...groupedTasks} />
+        <Timer addEntryCallback={addEntry} tasks={groupedTasks} />
       </TabPanel>
       <TabPanel value={value} index={1} className={classes.tabPanel}>
         <History tasks={taskList} />

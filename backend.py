@@ -4,6 +4,7 @@ import settings
 import json
 import tornado.ioloop
 import tornado.web
+from tornado import escape
 from db_service import DBService
 
 
@@ -14,6 +15,12 @@ class TasksHandler(tornado.web.RequestHandler):
     def get(self):
         entries = self.db.get_all_tasks()
         self.write(json.dumps([e.as_dict() for e in entries],
+                              indent=4, sort_keys=True, default=str))
+
+    def post(self):
+        task = json.loads(escape.to_unicode(self.request.body))
+        updated_entries = self.db.post_task(task)
+        self.write(json.dumps([e.as_dict() for e in updated_entries],
                               indent=4, sort_keys=True, default=str))
 
 

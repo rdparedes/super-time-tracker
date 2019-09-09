@@ -8,3 +8,18 @@ export async function getTimeEntries() {
     console.error(error);
   }
 }
+
+export async function postTimeEntry(data) {
+  try {
+    const response = await (await fetch(TIME_ENTRIES_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })).json();
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
