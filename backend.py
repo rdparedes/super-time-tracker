@@ -1,50 +1,28 @@
 import traceback
 import sys
 import settings
-
 import json
-
 import tornado.ioloop
 import tornado.web
+from db_service import DBService
 
 
-class TimeEntriesHandler(tornado.web.RequestHandler):
-    db = {
-        1: {
-            "id": 1,
-            "name": "Task 1",
-            "start": "2019-04-30T15:19:57.469Z",
-            "end": "2019-04-30T16:19:57.469Z"
-        },
-        2: {
-            "name": "Task 2",
-            "start": "2019-04-28T15:19:57.469Z",
-            "end": "2019-04-28T16:19:57.469Z",
-            "id": 2
-        },
-        3: {
-            "name": "Task 3",
-            "start": "2019-04-27T15:19:57.469Z",
-            "end": "2019-04-27T16:19:57.469Z",
-            "id": 3
-        },
-        4: {
-            "name": "Task 4",
-            "start": "2019-04-27T15:19:57.469Z",
-            "end": "2019-04-27T16:19:57.469Z",
-            "id": 4
-        }
-    }
+class TasksHandler(tornado.web.RequestHandler):
+    def initialize(self, db_service):
+        self.db = db_service
 
     def get(self):
-        self.write(json.dumps(self.db))
+        entries = self.db.get_all_tasks()
+        self.write(json.dumps([e.as_dict() for e in entries],
+                              indent=4, sort_keys=True, default=str))
+
 
 def make_app():
     return tornado.web.Application(
         handlers=[
-            (r"/time-entries", TimeEntriesHandler),
-            (r"/(.*)", tornado.web.StaticFileHandler, { 'path': settings.STATIC_PATH,
-                                                        'default_filename': 'index.html' })
+            (r"/time-entries", TasksHandler, dict(db_service=DBService())),
+            (r"/(.*)", tornado.web.StaticFileHandler, {'path': settings.STATIC_PATH,
+                                                       'default_filename': 'index.html'})
         ]
     )
 

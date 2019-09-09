@@ -6,8 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
+    "start": "webpack --watch & python backend.py",
     "test": "mochapack app/**/*.test.js"
   },
   "dependencies": {

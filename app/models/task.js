@@ -7,7 +7,7 @@ export default class Task {
     this.name = name;
     this.start = moment.utc(start);
     this.end = moment.utc(end);
-    this.duration = this.end.diff(start); // in milliseconds
+    this.duration = this.end.diff(this.start); // in milliseconds
   }
 }
 
