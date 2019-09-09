@@ -3,3 +3,5 @@ node_modules
 __pycache__
 *.pyc
 dist
+time_tracker.db
+.vscode/
