@@ -28,6 +28,12 @@ class TasksHandler(tornado.web.RequestHandler):
         self.write(json.dumps([e.as_dict() for e in updated_entries],
                               indent=4, sort_keys=True, default=str))
 
+    def put(self, task_id):
+        task = json.loads(escape.to_unicode(self.request.body))
+        updated_entries = self.db.put_task(task_id, task)
+        self.write(json.dumps([e.as_dict() for e in updated_entries],
+                              indent=4, sort_keys=True, default=str))
+
 
 def make_app():
     return tornado.web.Application(

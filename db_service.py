@@ -30,3 +30,9 @@ class DBService():
         self.session.query(Task).filter(Task.id == task_id).delete()
         self.session.commit()
         return self.get_all_tasks()
+
+    def put_task(self, task_id: int, t: Dict) -> List[Task]:
+        task = self.session.query(Task).filter(Task.id == task_id).first()
+        task.end = datetime.strptime(t.get('end'), DATETIME_FORMAT)
+        self.session.commit()
+        return self.get_all_tasks()

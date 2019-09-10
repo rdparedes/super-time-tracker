@@ -34,3 +34,18 @@ export async function deleteTimeEntry(id) {
     console.error(error);
   }
 }
+
+export async function putTimeEntry(data) {
+  try {
+    const response = await (await fetch(`${TIME_ENTRIES_URL}/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })).json();
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}

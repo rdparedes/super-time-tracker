@@ -29,7 +29,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function useInterval(callback, delay) {
+function sortTasks(t) {
+  const sortedTasks = {};
+  Object.keys(t)
+    .sort((a, b) => moment(a, DAY_MONTH_YEAR) < moment(b, DAY_MONTH_YEAR))
+    .forEach(key => (sortedTasks[key] = t[key]));
+  return sortedTasks;
+}
+
+export function useInterval(callback, delay) {
   const savedCallback = React.useRef();
 
   // Remember the latest callback.
@@ -49,15 +57,12 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-function sortTasks(t) {
-  const sortedTasks = {};
-  Object.keys(t)
-    .sort((a, b) => moment(a, DAY_MONTH_YEAR) < moment(b, DAY_MONTH_YEAR))
-    .forEach(key => (sortedTasks[key] = t[key]));
-  return sortedTasks;
-}
-
-export default function Timer({ tasks, addEntryCallback, deleteEntryCallback }) {
+export default function Timer({
+  tasks,
+  addEntryCallback,
+  updateEntryCallback,
+  deleteEntryCallback
+}) {
   const classes = useStyles();
   const sortedTasks = sortTasks(tasks);
 
@@ -140,6 +145,7 @@ export default function Timer({ tasks, addEntryCallback, deleteEntryCallback }) 
               key={t}
               day={t}
               {...sortedTasks[t]}
+              updateEntryCallback={updateEntryCallback}
               deleteEntryCallback={deleteEntryCallback}
             ></Day>
           ))}
@@ -151,5 +157,6 @@ export default function Timer({ tasks, addEntryCallback, deleteEntryCallback }) 
 Timer.propTypes = {
   tasks: PropTypes.object,
   addEntryCallback: PropTypes.func.isRequired,
+  updateEntryCallback: PropTypes.func.isRequired,
   deleteEntryCallback: PropTypes.func.isRequired
 };

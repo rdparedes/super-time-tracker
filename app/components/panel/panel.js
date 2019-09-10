@@ -6,7 +6,7 @@ import Timer from './timer/timer';
 import History from './history/history';
 import TabPanel from './tabPanel';
 import Task, { groupByDay } from '../../models/task';
-import { getTimeEntries, postTimeEntry, deleteTimeEntry } from '../../apiService';
+import { getTimeEntries, postTimeEntry, deleteTimeEntry, putTimeEntry } from '../../apiService';
 
 function a11yProps(index) {
   return {
@@ -63,6 +63,11 @@ export default function Panel() {
     updateTasks(updatedEntries);
   });
 
+  const updateEntry = React.useCallback(async entry => {
+    const updatedEntries = await putTimeEntry(entry);
+    updateTasks(updatedEntries);
+  });
+
   return (
     <div className={classes.root}>
       <Tabs
@@ -77,7 +82,12 @@ export default function Panel() {
         <Tab label="History" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0} className={classes.tabPanel}>
-        <Timer addEntryCallback={addEntry} deleteEntryCallback={removeEntry} tasks={groupedTasks} />
+        <Timer
+          addEntryCallback={addEntry}
+          updateEntryCallback={updateEntry}
+          deleteEntryCallback={removeEntry}
+          tasks={groupedTasks}
+        />
       </TabPanel>
       <TabPanel value={value} index={1} className={classes.tabPanel}>
         <History tasks={taskList} />

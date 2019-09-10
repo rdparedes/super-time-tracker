@@ -19,6 +19,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function sortTasks(t) {
+  return t.sort((a, b) => a.end < b.end);
+}
+
 export default function History({ tasks }) {
   const classes = useStyles();
 
@@ -42,7 +46,7 @@ export default function History({ tasks }) {
       </TableHead>
       <TableBody>
         {tasks &&
-          tasks.map(t => (
+          sortTasks(tasks).map(t => (
             <TableRow key={t.id}>
               <TableCell>{t.end.format(DAY_MONTH_YEAR)}</TableCell>
               <TableCell>
