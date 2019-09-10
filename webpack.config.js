@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
   entry: [path.resolve(__dirname, "app", "index.js")],
-  mode: "development",
+  mode: "production",
   devtool: "source-map",
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
